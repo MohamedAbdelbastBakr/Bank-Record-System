@@ -1,0 +1,263 @@
+#include "../include/My_Linked_list.h"
+#include <iostream>
+using namespace std;
+
+My_Linked_list::My_Linked_list()
+{
+
+    head=nullptr;
+}
+void My_Linked_list::display()
+{
+    nodeptr temp=new node;
+    temp=head;
+    while(temp!=nullptr)
+    {
+        cout<<"ACCOUNT NUMBER:";
+        cout<<temp->account_num<<endl;
+        cout<<"USER NAME:";
+        cout<<temp->name<<" "<<endl;
+        cout<<"BALANCE VALUE:";
+        cout<<temp->balance<<"\n"<<endl;
+        temp=temp->next;
+    }
+}
+void My_Linked_list::insert_last(int x,int y,string exp)
+{
+    nodeptr temp=new node;
+    nodeptr newnode=new node;
+    newnode->account_num=x;
+    newnode->balance=y;
+    newnode->name=exp;
+    temp=head;
+    if(head==nullptr)
+    {
+        head=newnode;
+        newnode->next=nullptr;
+    }
+    else
+    {
+        while(temp->next!=nullptr)
+        {
+            temp=temp->next;
+        }
+        temp->next=newnode;
+        newnode->next=nullptr;
+
+    }
+}
+void My_Linked_list::insert_first(int x,int y,string exp)
+{
+    nodeptr newnode=new node;
+    newnode->account_num=x;
+    newnode->balance=y;
+    newnode->name=exp;
+    newnode->next=head;
+    head=newnode;
+
+}
+bool My_Linked_list::search_accountnum(int x)
+{
+    int l=0;
+    nodeptr temp=new node;
+    temp=head;
+    if(head==nullptr)
+        l==0;
+    while(temp!=nullptr)
+    {
+        if(temp->account_num==x)
+        {
+            l=1;
+            temp=temp->next;
+        }
+        else
+        {
+            temp=temp->next;
+        }
+    }
+    if(l==1)
+        return true;
+    else
+        return false;
+}
+void My_Linked_list::search_record()
+{
+    int num,l=0;
+    cout<<"ENTER ACCOUNT NUMBER: ";
+    cin>>num;
+    nodeptr temp=new node;
+    temp=head;
+    if(head==nullptr)
+        cout<<"THERE IS NO EXISTING ACCOUNTS!!"<<endl;
+    while(temp!=nullptr)
+    {
+        if(temp->account_num==num)
+        {
+            cout<<"ACCOUNT NUMBER:";
+            cout<<temp->account_num<<endl;
+            cout<<"USER NAME:";
+            cout<<temp->name<<" "<<endl;
+            cout<<"BALANCE VALUE:";
+            cout<<temp->balance<<"\n"<<endl;
+            temp=temp->next;
+            l=1;
+        }
+        else
+        {
+            temp=temp->next;
+        }
+    }
+    if(l==0)
+        cout<<"THIS ACCOUNT DOESNT EXIST!!"<<endl;
+}
+void My_Linked_list::update_record()
+{
+    int num,x,bal,done=0,l=0;
+    string nam;
+    cout<<"ENTER ACCOUNT NUMBER: ";
+    cin>>num;
+    nodeptr temp=new node;
+    temp=head;
+    if(head==nullptr)
+        cout<<"THERE IS NO EXISTING ACCOUNTS!!"<<endl;
+    while(temp!=nullptr)
+    {
+        if(temp->account_num==num&&done==0)
+        {
+            cout<<"CURRENT ACCOUNT DATA: "<<endl;
+            cout<<"ACCOUNT NUMBER:";
+            cout<<temp->account_num<<endl;
+            cout<<"USER NAME:";
+            cout<<temp->name<<" "<<endl;
+            cout<<"BALANCE VALUE:";
+            cout<<temp->balance<<"\n"<<endl;
+            cout<<"WHICH DATA WANT TO UPDATE:\n1=>USERNAME\n2=>BALANCE VALUE"<<endl;
+            cout<<"SELECT YOUR OPTION <1-2>: ";
+            cin>>x;
+
+            switch(x)
+            {
+            case 1:
+            {
+                cout<<"PLEASE ENTER NEW USERNAME : ";
+                cin>>nam;
+                temp->name=nam;
+                cout<<"ACCOUNT UPDATED SUCCESSFULLY!!"<<endl;
+                done=1;
+                l=1;
+                break;
+
+            }
+            case 2:
+            {
+                cout<<"PLEASE ENTER NEW BALANCE VALUE : ";
+                cin>>bal;
+                temp->balance=bal;
+                cout<<"ACCOUNT UPDATED SUCCESSFULLY!!"<<endl;
+                done=1;
+                l=1;
+                break;
+            }
+
+            default:
+            {
+                cout<<"ERROR!! PLEASE SELECT FROM <1-2>: ";
+                break;
+                temp=temp->next;
+            }
+            }
+        }
+        else
+        {
+            temp=temp->next;
+        }
+    }
+    if(l==0)
+        cout<<"THIS ACCOUNT DOESNT EXIST!!"<<endl;
+}
+
+void My_Linked_list::delete_record()
+{
+    int num;
+    cout<<"ENTER ACCOUNT NUMBER: ";
+    cin>>num;
+    nodeptr current = head;
+    nodeptr previous = NULL;
+    while (current != NULL)
+    {
+        if (current->account_num == num)
+        {
+            if (previous == NULL)
+            {
+                head = current->next;
+            }
+            else
+            {
+                previous->next = current->next;
+            }
+            delete current;
+            cout << "ACCOUNT DELETED SUCCESSFULLY!" << endl;
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+    cout << "THIS ACCOUNT DOESNT EXIST!!" << endl;
+}
+
+void My_Linked_list::add_record()
+{
+    int num,bal;
+    string nam;
+    cout<<"ENTER ACCOUNT NUMBER: ";
+    cin>>num;
+    if(search_accountnum(num))
+        cout<<"Account Number Already Exist!!"<<endl;
+    else
+    {
+        cout<<"ENTER USERNAME: ";
+        cin>>nam;
+        cout<<"ENTER BALANCE VALUE: ";
+        cin>>bal;
+        insert_last(num,bal,nam);
+        cout<<"DONE! ACCOUNT ADDED SUCCESSFULLY!"<<endl;
+    }
+}
+void My_Linked_list::display_users_names()
+{
+    nodeptr temp=new node;
+    temp=head;
+    cout<<"HERE IS ALL USERS-NAMES :"<<endl;
+    while(temp!=nullptr)
+    {
+        cout<<temp->name<<" "<<endl;
+        temp=temp->next;
+    }
+}
+void My_Linked_list::total_balance()
+{
+    double sum=0;
+    nodeptr temp=new node;
+    temp=head;
+    cout<<"NOW DISPLAYING EACH INDIVIDUAL BALANCE : "<<endl;
+    while(temp!=nullptr)
+    {
+        cout<<temp->balance<<" "<<endl;
+        sum=sum+temp->balance;
+        temp=temp->next;
+    }
+    cout<<"TOTAL BALANCE: "<<sum;
+}
+void My_Linked_list::intro(){
+cout<<"***********************BANK RECORDING SYSTEM*****************"<<endl;
+cout<<"       1=>ADD RECORD TO DATABASE"<<endl;
+cout<<"       2=>DISPALY RECORDS IN DATABASE"<<endl;
+cout<<"       3=>SEARCH RECORD FROM DATABASE"<<endl;
+cout<<"       4=>UPDATE RECORD"<<endl;
+cout<<"       5=>DELETE RECORD"<<endl;
+cout<<"       6=>DISPALY ALL USER-NAMES"<<endl;
+cout<<"       7=>TOTAL BALANCE IN DATABASE"<<endl;
+cout<<"SELECT YOUR CHOICE FROM <1-7> : ";
+
+}
+

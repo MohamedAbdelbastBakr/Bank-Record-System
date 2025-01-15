@@ -1,0 +1,38 @@
+#ifndef MY_LINKED_LIST_H
+#define MY_LINKED_LIST_H
+#include <iostream>
+
+using namespace std;
+
+struct node
+{
+    int account_num;
+    int balance;
+    string name;
+    node *next;
+};
+typedef node *nodeptr;
+
+class My_Linked_list
+{
+    public:
+        My_Linked_list();
+        nodeptr Gethead() { return head; }
+        void Sethead(nodeptr val) { head = val; }
+        void display();
+        void insert_last(int,int,string);
+        void insert_first(int,int,string);
+        bool search_accountnum(int);
+        void search_record();
+        void update_record();
+        void delete_record();
+        void add_record();
+        void total_balance();
+        void display_users_names();
+        void intro();
+    private:
+        nodeptr head;
+};
+
+
+#endif // MY_LINKED_LIST_H
